@@ -202,3 +202,4 @@
       radial-gradient(circle at 20% 80%, hsl(var(--primary) / 0.1) 0%, transparent 50%),
       radial-gradient(circle at 80% 20%, hsl(var(--love-circle) / 0.1) 0%, transparent 50%);
   }
+}
