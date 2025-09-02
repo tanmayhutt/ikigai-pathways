@@ -10,6 +10,8 @@ interface LandingPageProps {
 const LandingPage = ({ onStartJourney }: LandingPageProps) => {
   const [hovering, setHovering] = useState(false);
 
+  console.log('LandingPage rendered');
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
       {/* Background Elements */}

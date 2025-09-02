@@ -24,6 +24,9 @@ const Index = () => {
     market: []
   });
 
+  console.log('App state:', currentState);
+  console.log('Current question index:', currentQuestionIndex);
+
   // Mock career data - in real app, this would come from AI analysis
   const mockCareers = [
     {
