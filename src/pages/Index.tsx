@@ -4,8 +4,13 @@ import QuestionStep from '@/components/QuestionStep';
 import ConvergencePage from '@/components/ConvergencePage';
 import ResultsPage from '@/components/ResultsPage';
 import { questions } from '@/data/questions';
+import { CareerMatcher, PerplexityCareerMatcher } from '@/services/careerMatcher';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { AlertCircle, Key } from 'lucide-react';
 
-type AppState = 'landing' | 'questions' | 'convergence' | 'results';
+type AppState = 'landing' | 'questions' | 'convergence' | 'results' | 'api-setup';
 
 interface IkigaiAnswers {
   love: string[];
@@ -23,6 +28,9 @@ const Index = () => {
     world: [],
     market: []
   });
+  const [apiKey, setApiKey] = useState('');
+  const [careers, setCareers] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
 
   console.log('App state:', currentState);
   console.log('Current question index:', currentQuestionIndex);
@@ -142,8 +150,28 @@ const Index = () => {
     }
   };
 
-  const handleConvergenceComplete = () => {
-    setCurrentState('results');
+  const handleConvergenceComplete = async () => {
+    if (!apiKey) {
+      setCurrentState('api-setup');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      // Use Perplexity API for real AI recommendations  
+      const matcher = new PerplexityCareerMatcher(apiKey);
+      const recommendations = await matcher.getCareerRecommendations(answers);
+      setCareers(recommendations);
+      setCurrentState('results');
+    } catch (error) {
+      console.error('Error getting recommendations:', error);
+      // Fallback to mock data
+      const matcher = new CareerMatcher('');
+      setCareers(matcher.getMockCareers());
+      setCurrentState('results');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleExportPlan = (career: any) => {
@@ -175,10 +203,65 @@ const Index = () => {
       {currentState === 'convergence' && (
         <ConvergencePage onContinue={handleConvergenceComplete} />
       )}
+
+      {currentState === 'api-setup' && (
+        <div className="min-h-screen flex items-center justify-center p-6">
+          <Card className="max-w-md w-full p-8 text-center">
+            <div className="mb-6">
+              <Key className="w-12 h-12 mx-auto mb-4 text-primary" />
+              <h2 className="text-2xl font-bold mb-2">AI Configuration</h2>
+              <p className="text-muted-foreground">
+                Enter your Perplexity API key to get AI-powered career recommendations
+              </p>
+            </div>
+            
+            <div className="space-y-4">
+              <Input
+                type="password"
+                placeholder="Enter Perplexity API Key"
+                value={apiKey}
+                onChange={(e) => setApiKey(e.target.value)}
+              />
+              
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <AlertCircle className="w-4 h-4" />
+                <span>Your API key is stored locally and never shared</span>
+              </div>
+              
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setCareers(mockCareers);
+                    setCurrentState('results');
+                  }}
+                  className="flex-1"
+                >
+                  Use Mock Data
+                </Button>
+                <Button
+                  onClick={handleConvergenceComplete}
+                  disabled={!apiKey || loading}
+                  className="flex-1"
+                >
+                  {loading ? 'Analyzing...' : 'Get AI Recommendations'}
+                </Button>
+              </div>
+              
+              <p className="text-xs text-muted-foreground">
+                Get your free API key at{' '}
+                <a href="https://perplexity.ai" target="_blank" rel="noopener noreferrer" className="text-primary underline">
+                  perplexity.ai
+                </a>
+              </p>
+            </div>
+          </Card>
+        </div>
+      )}
       
       {currentState === 'results' && (
         <ResultsPage
-          careers={mockCareers}
+          careers={careers.length > 0 ? careers : mockCareers}
           onExportPlan={handleExportPlan}
           onRestartJourney={handleRestartJourney}
         />
