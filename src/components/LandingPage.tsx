@@ -17,22 +17,22 @@ const LandingPage = ({ onStartJourney }: LandingPageProps) => {
       {/* Background Elements */}
       <div className="absolute inset-0 opacity-50">
         <div className="absolute top-20 left-10 w-2 h-2 bg-primary rounded-full animate-pulse" />
-        <div className="absolute top-40 right-20 w-1 h-1 bg-ikigai-love rounded-full animate-pulse" style={{ animationDelay: '1s' }} />
-        <div className="absolute bottom-32 left-20 w-1 h-1 bg-ikigai-talent rounded-full animate-pulse" style={{ animationDelay: '2s' }} />
-        <div className="absolute bottom-20 right-32 w-2 h-2 bg-ikigai-world rounded-full animate-pulse" style={{ animationDelay: '0.5s' }} />
+        <div className="absolute top-40 right-20 w-1 h-1 bg-pink-400 rounded-full animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="absolute bottom-32 left-20 w-1 h-1 bg-green-400 rounded-full animate-pulse" style={{ animationDelay: '2s' }} />
+        <div className="absolute bottom-20 right-32 w-2 h-2 bg-yellow-400 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }} />
       </div>
 
       {/* Hero Content */}
       <div className="text-center space-y-8 max-w-4xl mx-auto px-6 z-10">
         <div className="space-y-4">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-card border border-border text-sm">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card border border-border text-sm">
             <Sparkles className="w-4 h-4 text-primary" />
             <span>Powered by Google Cloud AI</span>
           </div>
           
           <h1 className="text-6xl md:text-7xl font-bold leading-tight">
             Find Your{' '}
-            <span className="cosmic-text">
+            <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-yellow-400 bg-clip-text text-transparent">
               Ikigai
             </span>
           </h1>
@@ -53,7 +53,7 @@ const LandingPage = ({ onStartJourney }: LandingPageProps) => {
           <Button
             onClick={onStartJourney}
             size="lg"
-            className="hero-card text-lg px-8 py-6 bg-gradient-cosmic hover:shadow-cosmic transition-all duration-500 group"
+            className="text-lg px-8 py-6 bg-primary hover:bg-primary/90 transition-all duration-500 group"
             onMouseEnter={() => setHovering(true)}
             onMouseLeave={() => setHovering(false)}
           >
