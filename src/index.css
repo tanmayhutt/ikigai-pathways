@@ -2,57 +2,70 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* IkigaiPath Design System - Cinematic Career Discovery */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 220 26% 2%;
+    --foreground: 210 40% 98%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 220 26% 4%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 220 26% 4%;
+    --popover-foreground: 210 40% 98%;
 
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 262 83% 58%;
     --primary-foreground: 210 40% 98%;
+    --primary-glow: 262 83% 68%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 220 26% 8%;
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 220 26% 8%;
+    --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 220 26% 12%;
+    --accent-foreground: 210 40% 98%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 220 26% 12%;
+    --input: 220 26% 8%;
+    --ring: 262 83% 58%;
 
-    --radius: 0.5rem;
+    --radius: 1rem;
 
-    --sidebar-background: 0 0% 98%;
+    /* Ikigai Circle Colors */
+    --love-circle: 340 100% 70%;
+    --talent-circle: 160 100% 70%;
+    --world-circle: 45 100% 70%;
+    --market-circle: 220 100% 70%;
+    
+    /* Cinematic Gradients */
+    --gradient-cosmic: linear-gradient(135deg, hsl(262 83% 58%), hsl(340 100% 70%), hsl(45 100% 70%));
+    --gradient-hero: linear-gradient(135deg, hsl(220 26% 2%), hsl(220 26% 8%));
+    --gradient-card: linear-gradient(135deg, hsl(220 26% 4%), hsl(220 26% 8%));
+    --gradient-glow: radial-gradient(circle at center, hsl(262 83% 58% / 0.3), transparent 70%);
+    
+    /* Shadows & Effects */
+    --shadow-cosmic: 0 25px 50px -12px hsl(262 83% 58% / 0.4);
+    --shadow-glow: 0 0 100px hsl(262 83% 58% / 0.3);
+    --shadow-card: 0 10px 30px -10px hsl(220 26% 0% / 0.5);
+    
+    /* Animations */
+    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 220 26% 4%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 262 83% 58%;
+    --sidebar-primary-foreground: 210 40% 98%;
+    --sidebar-accent: 220 26% 8%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 220 26% 12%;
+    --sidebar-ring: 262 83% 58%;
   }
 
   .dark {
@@ -94,6 +107,90 @@ All colors MUST be HSL.
   }
 }
 
+/* Cinematic Animations & Effects */
+@layer components {
+  .cosmic-glow {
+    box-shadow: var(--shadow-cosmic);
+    background: var(--gradient-glow);
+  }
+  
+  .ikigai-circle {
+    @apply w-32 h-32 rounded-full relative overflow-hidden transition-all duration-700 hover:scale-110;
+    backdrop-filter: blur(10px);
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  
+  .ikigai-circle.love {
+    background: radial-gradient(circle, hsl(var(--love-circle) / 0.3), transparent 70%);
+    border-color: hsl(var(--love-circle));
+  }
+  
+  .ikigai-circle.talent {
+    background: radial-gradient(circle, hsl(var(--talent-circle) / 0.3), transparent 70%);  
+    border-color: hsl(var(--talent-circle));
+  }
+  
+  .ikigai-circle.world {
+    background: radial-gradient(circle, hsl(var(--world-circle) / 0.3), transparent 70%);
+    border-color: hsl(var(--world-circle));
+  }
+  
+  .ikigai-circle.market {
+    background: radial-gradient(circle, hsl(var(--market-circle) / 0.3), transparent 70%);
+    border-color: hsl(var(--market-circle));
+  }
+  
+  .hero-card {
+    background: var(--gradient-card);
+    box-shadow: var(--shadow-card);
+    backdrop-filter: blur(20px);
+    border: 1px solid hsl(var(--border));
+    transition: var(--transition-smooth);
+  }
+  
+  .hero-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-cosmic);
+  }
+  
+  .cosmic-text {
+    background: var(--gradient-cosmic);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .floating {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  .pulse-glow {
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px hsl(var(--primary) / 0.3); }
+  50% { box-shadow: 0 0 40px hsl(var(--primary) / 0.6); }
+}
+
+@keyframes ikigai-converge {
+  0% { transform: scale(1) translateX(0) translateY(0); opacity: 0.7; }
+  50% { transform: scale(1.1) translateX(-10px) translateY(-10px); opacity: 0.9; }
+  100% { transform: scale(1) translateX(0) translateY(0); opacity: 1; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
 @layer base {
   * {
     @apply border-border;
@@ -101,5 +198,7 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    background-image: 
+      radial-gradient(circle at 20% 80%, hsl(var(--primary) / 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, hsl(var(--love-circle) / 0.1) 0%, transparent 50%);
   }
-}
