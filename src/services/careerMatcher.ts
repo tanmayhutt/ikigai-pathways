@@ -130,7 +130,7 @@ export class CareerMatcher {
 }
 
 // Perplexity AI Alternative (if not using Google Cloud)
-export class PerplexityCareerMatcher {
+export class GeminiCareerMatcher {
   private apiKey: string;
 
   constructor(apiKey: string) {
@@ -138,63 +138,30 @@ export class PerplexityCareerMatcher {
   }
 
   async getCareerRecommendations(answers: IkigaiAnswers): Promise<CareerRecommendation[]> {
-    const message = `Based on these Ikigai answers, recommend 3 career paths for Indian students with detailed analysis:
+    const prompt = `Based on the following Ikigai answers, recommend 3 specific career paths for an Indian student:
 
-Love: ${answers.love.join(', ')}
-Talent: ${answers.talent.join(', ')} 
-World Needs: ${answers.world.join(', ')}
-Market: ${answers.market.join(', ')}
+What they LOVE: ${answers.love.join(', ')}
+What they're GOOD AT: ${answers.talent.join(', ')}
+What the WORLD NEEDS: ${answers.world.join(', ')}
+What they can be PAID FOR: ${answers.market.join(', ')}
 
-Include match %, skills needed, Indian salary ranges, job locations, and 6-week learning plan for each career.`;
+Return ONLY a valid JSON array with career recommendations including match percentage, skills, salary ranges, and roadmap.`;
 
     try {
-      const response = await fetch('https://api.perplexity.ai/chat/completions', {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${this.apiKey}`, {
         method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${this.apiKey}`,
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model: 'llama-3.1-sonar-large-128k-online',
-          messages: [
-            {
-              role: 'system',
-              content: 'You are a career counselor specializing in the Indian job market. Provide detailed, actionable career recommendations in JSON format.'
-            },
-            {
-              role: 'user',
-              content: message
-            }
-          ],
-          temperature: 0.2,
-          top_p: 0.9,
-          max_tokens: 2000,
-          return_images: false,
-          return_related_questions: false,
-          search_recency_filter: 'month',
-          frequency_penalty: 1,
-          presence_penalty: 0
-        }),
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { temperature: 0.3, maxOutputTokens: 2048 }
+        })
       });
 
-      if (!response.ok) {
-        throw new Error('Perplexity API request failed');
-      }
-
       const data = await response.json();
-      return this.parsePerplexityResponse(data.choices[0].message.content);
+      const aiResponse = data.candidates[0].content.parts[0].text;
+      const jsonMatch = aiResponse.match(/\[[\s\S]*\]/);
+      return jsonMatch ? JSON.parse(jsonMatch[0]) : new CareerMatcher('').getMockCareers();
     } catch (error) {
-      console.error('Error with Perplexity API:', error);
-      return new CareerMatcher('').getMockCareers();
-    }
-  }
-
-  private parsePerplexityResponse(content: string): CareerRecommendation[] {
-    // Parse the AI response and convert to our format
-    // This would need custom parsing logic based on the response format
-    try {
-      return JSON.parse(content);
-    } catch {
       return new CareerMatcher('').getMockCareers();
     }
   }

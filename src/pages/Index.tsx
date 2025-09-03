@@ -159,7 +159,7 @@ const Index = () => {
     setLoading(true);
     try {
       // Use Perplexity API for real AI recommendations  
-      const matcher = new PerplexityCareerMatcher(apiKey);
+      const matcher = new GeminiCareerMatcher(apiKey);
       const recommendations = await matcher.getCareerRecommendations(answers);
       setCareers(recommendations);
       setCurrentState('results');
