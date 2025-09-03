@@ -4,7 +4,7 @@ import QuestionStep from '@/components/QuestionStep';
 import ConvergencePage from '@/components/ConvergencePage';
 import ResultsPage from '@/components/ResultsPage';
 import { questions } from '@/data/questions';
-import { CareerMatcher, PerplexityCareerMatcher } from '@/services/careerMatcher';
+import { CareerMatcher, GeminiCareerMatcher } from '@/services/careerMatcher';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
